@@ -71,7 +71,9 @@ const Footer = () => {
             <li>
               <a
                 className="text-white hover:text-[#FBBF24] transition-all duration-300"
-                href="#"
+                href="https://wa.me/918595927668"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Support
               </a>
