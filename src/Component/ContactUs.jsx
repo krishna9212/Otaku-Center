@@ -105,7 +105,7 @@ function ContactUs() {
             }
             title="Hotline"
             description="Call us—your senpais are listening."
-            details="+81 (123) 456-7890"
+            details="+91 85959 27668"
           />
         </div>
       </div>
