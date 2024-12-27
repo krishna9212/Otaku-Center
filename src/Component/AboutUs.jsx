@@ -1,45 +1,8 @@
 import React, { memo, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-
-const RotatingMesh = ({ isInteracting }) => {
-  const meshRef = useRef(null); // Reference for the object
-
-  // Automatically rotate the object when the user is not interacting
-  useFrame(() => {
-    if (!isInteracting && meshRef.current) {
-      // Increase the increment for faster rotation
-      meshRef.current.rotation.x += 0.003; // Increased value for faster rotation
-      meshRef.current.rotation.y += 0.005; // Increased value for faster rotation
-    }
-  });
-
-  return (
-    <mesh ref={meshRef} scale={[0.7, 0.7, 0.7]} rotation={[1, 1, 1]} castShadow>
-      <torusKnotGeometry args={[2, 0.5, 100, 16]} />
-      <meshStandardMaterial
-        color="#FCDE70"
-        metalness={0.2}
-        roughness={0.7}
-      />{" "}
-      {/* New color */}
-    </mesh>
-  );
-};
+import img from "./../assets/HeroImages/AB.png";
+import img1 from "./../assets/HeroImages/AB (2).png";
 
 const AboutUs = () => {
-  const [isInteracting, setIsInteracting] = useState(false); // Flag to detect user interaction
-
-  // Event handler for user interaction
-  const handleInteraction = () => {
-    setIsInteracting(true);
-  };
-
-  // Event handler when user stops interacting
-  const handleInteractionEnd = () => {
-    setIsInteracting(false);
-  };
-
   return (
     <div
       id="about"
@@ -47,26 +10,8 @@ const AboutUs = () => {
     >
       <div className="max-w-7xl w-full  grid md:grid-cols-2 gap-10">
         {/* Left Section - 3D Object */}
-        <div className="flex h-[350px] md:h-[450px] w-full   items-center justify-center">
-          <Canvas>
-            {/* Lighting for better visuals */}
-            <ambientLight intensity={0.3} />
-            <directionalLight position={[5, 5, 5]} intensity={0.7} />
-            <spotLight position={[-5, 10, 5]} angle={0.15} intensity={1.2} />
-
-            {/* Rotating Mesh with automatic and user-controlled rotation */}
-            <RotatingMesh isInteracting={isInteracting} />
-
-            {/* OrbitControls for user interaction with slower rotation */}
-            <OrbitControls
-              enableZoom={false} // Disable zoom to stop object scaling
-              enableRotate={true} // Allow user to rotate the object
-              rotateSpeed={0.3} // Slow down the rotation speed
-              onPointerDown={handleInteraction} // User starts interacting
-              onPointerUp={handleInteractionEnd} // User stops interacting
-              onPointerOut={handleInteractionEnd} // User stops interacting when the mouse leaves the object
-            />
-          </Canvas>
+        <div className="flex h-[300px] pb-80 md:pb-0 md:-mt-72 md:h-[450px] w-full   items-center justify-center">
+          <img src={img1} alt="" />
         </div>
 
         {/* Right Section - Content */}
