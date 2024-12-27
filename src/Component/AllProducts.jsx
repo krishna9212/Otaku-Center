@@ -57,13 +57,13 @@ function AllProducts() {
         {products.map((product) => (
           <div
             key={product.id}
-            className="bg-white h-[100%] p-6 rounded-lg shadow-lg transform transition-all"
+            className="bg-white h-min-[100%] p-6 rounded-lg shadow-lg transform transition-all"
           >
             {/* Product Image */}
             <img
               src={product.imageURL || "https://via.placeholder.com/150"}
               alt={product.productName}
-              className="w-full md:h-[60%] object-cover rounded-lg mb-1 shadow-md"
+              className="w-full h-[70%] md:h-[60%] object-cover rounded-lg mb-1 shadow-md"
             />
 
             {/* Product Info */}
@@ -74,14 +74,14 @@ function AllProducts() {
               {product.productName}
             </h3>
             <p
-              className="text-gray-600 h-[15%]  overflow-hidden overflow-ellipsis  line-clamp-3 scrollbar-thin scrollbar-thumb-gray-300"
+              className="text-gray-600 h-[10%]  overflow-hidden overflow-ellipsis  line-clamp-3 scrollbar-thin scrollbar-thumb-gray-300"
               title={product.description}
             >
               {product.description}
             </p>
 
             {/* Product Action */}
-            <div className="flex h-[10%] justify-between items-start mt-2">
+            <div className="flex h-[10%]  justify-between items-start py-2 ">
               <span className="text-xl font-semibold text-[#4E4C50]">
                 ₹{product.price}
               </span>
