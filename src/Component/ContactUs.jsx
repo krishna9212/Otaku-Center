@@ -82,8 +82,9 @@ function ContactUs() {
             }
             title="Guild HQ"
             description="Visit our secret base—adventure awaits!"
-            details="404 Senpai Lane, Waifu Town, Mecha City, Planet Otaku, Galaxy 9000
-(Just Kidding: We are based in Lajpat Nagar, Delhi)"
+            details={
+              "404 Senpai Lane, Waifu Town, Mecha City, Planet Otaku, Galaxy 9000 (Just Kidding: We are based in Lajpat Nagar, Delhi)"
+            }
           />
 
           {/* Phone Section */}

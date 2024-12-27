@@ -25,7 +25,9 @@ const Footer = () => {
               className="bg-[#FBBF24] text-gray-800 hover:bg-[#EDE9D0] p-4 rounded-full shadow-lg transition-all duration-300"
               type="button"
             >
-              <i className="fab fa-github"></i>
+              <a href="https://github.com/krishna9212/Otaku-Center.git">
+                <i className="fab fa-github"></i>
+              </a>
             </button>
           </div>
         </div>
