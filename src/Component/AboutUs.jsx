@@ -11,7 +11,7 @@ const AboutUs = () => {
       <div className="max-w-7xl w-full  grid md:grid-cols-2 gap-10">
         {/* Left Section - 3D Object */}
         <div className="flex h-[300px] pb-80 md:pb-0 md:-mt-72 md:h-[450px] w-full   items-center justify-center">
-          <img src={img1} alt="" />
+          <img src={img1} alt="" className="rounded-xl" />
         </div>
 
         {/* Right Section - Content */}
