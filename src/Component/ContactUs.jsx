@@ -54,7 +54,7 @@ function ContactUs() {
             }
             title="Raven Mail"
             description="Summon us with your words of power."
-            link="konnichiwa@animeguild.com"
+            link="Otakucentrein@gmail.com"
           />
 
           {/* Office Section */}

@@ -47,33 +47,41 @@ function AllProducts() {
       {/* Header */}
       <h1
         id="products"
-        className="capitalize bg-[#faeb8a] text-center font-normal  text-[3rem] pt-3"
+        className="capitalize bg-[#faeb8a] text-center font-normal text-[3rem] pt-3"
       >
         All Products
       </h1>
 
       {/* Product List */}
-      <div className="grid bg-[#faec94] grid-cols-1 sm:grid-cols-4 gap-6 p-6">
+      <div className="grid h-min-full bg-[#faec94] grid-cols-1 sm:grid-cols-4 gap-6 p-6">
         {products.map((product) => (
           <div
             key={product.id}
-            className="bg-white p-6 rounded-lg shadow-lg transform transition-all"
+            className="bg-white h-[100%] p-6 rounded-lg shadow-lg transform transition-all"
           >
             {/* Product Image */}
             <img
               src={product.imageURL || "https://via.placeholder.com/150"}
               alt={product.productName}
-              className="w-full md:h-[70%] object-cover rounded-lg mb-6 shadow-md "
+              className="w-full md:h-min-[60%] object-cover rounded-lg mb-1 shadow-md"
             />
 
             {/* Product Info */}
-            <h3 className="text-2xl font-semibold text-gray-900 mb-1">
+            <h3
+              className="text-2xl h-min-[10%] font-semibold text-gray-900 mb-1 line-clamp-2"
+              title={product.productName}
+            >
               {product.productName}
             </h3>
-            <p className="text-gray-600 truncate">{product.description}</p>
+            <p
+              className="text-gray-600 h-min-[20%]  overflow-hidden overflow-ellipsis  line-clamp-3 scrollbar-thin scrollbar-thumb-gray-300"
+              title={product.description}
+            >
+              {product.description}
+            </p>
 
             {/* Product Action */}
-            <div className="flex justify-between items-center mt-2">
+            <div className="flex h-min-[10%] justify-between items-center mt-2">
               <span className="text-xl font-semibold text-[#4E4C50]">
                 ₹{product.price}
               </span>
