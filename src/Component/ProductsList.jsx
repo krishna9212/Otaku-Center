@@ -68,7 +68,7 @@ const ProductsList = () => {
         {products.map((product) => (
           <div
             key={product.id}
-            className="flex-shrink-0 w-[300px] h-[440px] p-6 bg-white rounded-2xl shadow-lg transition-transform duration-300 ease-in-out"
+            className="flex-shrink-0 w-[350px] md:w-[300px] h-[600px] md:h-[500px] p-6 bg-white rounded-2xl shadow-lg transition-transform duration-300 ease-in-out"
             style={{
               scrollSnapAlign: "center", // Snap to center
             }}
@@ -77,21 +77,21 @@ const ProductsList = () => {
             <img
               src={product.imageURL || "https://via.placeholder.com/150"}
               alt={product.productName}
-              className="w-full h-[60%] object-cover rounded-lg mb-6 shadow-md"
+              className="w-full h-[60%] md:h-[50%] object-cover rounded-lg mb-6 shadow-md"
             />
 
             {/* Product Info */}
-            <h3 className="text-4xl md:text-2xl font-semibold text-[#2E2C2F] mb-3 truncate">
+            <h3 className="text-2xl md:h-[14%]  md:text-2xl font-semibold text-[#2E2C2F]  mb-1 ">
               {product.productName}
             </h3>
-            <p className="text-[#777] text-xl md:text-base mb-4 truncate">
+            <p className="text-[#777] md:h-[16%]   text-lg md:text-base mb-1 ">
               {product.description}
             </p>
 
             {/* Price and Buttons */}
-            <div className="flex justify-between items-center">
+            <div className="flex h-[10%] mt-1 justify-between items-center">
               <span className="text-xl font-semibold text-[#4E4C50]">
-                ₹{product.price}
+                ${product.price}
               </span>
               <div className="flex items-center gap-4">
                 {/* Add to Bag or Remove from Bag Button */}
