@@ -63,25 +63,25 @@ function AllProducts() {
             <img
               src={product.imageURL || "https://via.placeholder.com/150"}
               alt={product.productName}
-              className="w-full md:h-min-[60%] object-cover rounded-lg mb-1 shadow-md"
+              className="w-full md:h-[60%] object-cover rounded-lg mb-1 shadow-md"
             />
 
             {/* Product Info */}
             <h3
-              className="text-2xl h-min-[10%] font-semibold text-gray-900 mb-1 line-clamp-2"
+              className="text-2xl h-[10%] font-semibold text-gray-900 mb-1 line-clamp-2"
               title={product.productName}
             >
               {product.productName}
             </h3>
             <p
-              className="text-gray-600 h-min-[20%]  overflow-hidden overflow-ellipsis  line-clamp-3 scrollbar-thin scrollbar-thumb-gray-300"
+              className="text-gray-600 h-[15%]  overflow-hidden overflow-ellipsis  line-clamp-3 scrollbar-thin scrollbar-thumb-gray-300"
               title={product.description}
             >
               {product.description}
             </p>
 
             {/* Product Action */}
-            <div className="flex h-min-[10%] justify-between items-center mt-2">
+            <div className="flex h-[10%] justify-between items-start mt-2">
               <span className="text-xl font-semibold text-[#4E4C50]">
                 ₹{product.price}
               </span>
