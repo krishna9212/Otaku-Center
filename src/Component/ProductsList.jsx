@@ -7,6 +7,12 @@ const ProductsList = () => {
   const [products, setProducts] = useState([]);
   const scrollContainerRef = useRef(null);
   const { addToCart, removeFromCart, cart } = useCart(); // Access cart functions and state
+  const autoScrollInterval = useRef(null);
+
+  // Calculate scroll distance based on screen width
+  const getScrollDistance = () => {
+    return window.innerWidth <= 768 ? 330 : 500; // Adjust for mobile vs larger screens
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -25,7 +31,7 @@ const ProductsList = () => {
         });
 
         // Repeat products to simulate infinite scrolling
-        setProducts([fetchedProducts].flat());
+        setProducts([fetchedProducts, fetchedProducts, fetchedProducts].flat());
       } catch (error) {
         console.error("Error fetching products: ", error);
       }
@@ -44,14 +50,43 @@ const ProductsList = () => {
     }
   };
 
+  const startAutoScroll = () => {
+    autoScrollInterval.current = setInterval(() => {
+      scrollBy(getScrollDistance()); // Use responsive scroll distance
+    }, 3000); // 3-second interval
+  };
+
+  const stopAutoScroll = () => {
+    if (autoScrollInterval.current) {
+      clearInterval(autoScrollInterval.current);
+    }
+  };
+
+  useEffect(() => {
+    startAutoScroll();
+
+    return () => {
+      stopAutoScroll(); // Cleanup on component unmount
+    };
+  }, []);
+
+  const handleUserInteraction = () => {
+    stopAutoScroll();
+    startAutoScroll(); // Restart auto-scroll after interaction
+  };
+
   const isInCart = (productId) => {
     return cart.some((item) => item.id === productId); // Check if product is in cart
   };
 
   return (
-    <div className="relative bg-[#f9e98a] p-10 pb-20 md:pb-16  bg-no-repeat bg-cover ">
+    <div
+      className="relative bg-[#f9e98a] p-10 pb-20 md:pb-16 bg-no-repeat bg-cover"
+      onMouseEnter={stopAutoScroll} // Pause auto-scroll on hover
+      onMouseLeave={startAutoScroll} // Resume auto-scroll on leave
+    >
       {/* Title */}
-      <h2 className="text-[2.29rem]   whitespace-nowrap md:text-5xl font-bold text-center text-[#2E2C2F] mb-12 tracking-wide">
+      <h2 className="text-[2.29rem] whitespace-nowrap md:text-5xl font-bold text-center text-[#2E2C2F] mb-12 tracking-wide">
         Featured Products
       </h2>
 
@@ -64,6 +99,8 @@ const ProductsList = () => {
           padding: "0 40px", // Ensure space for buttons
           scrollSnapType: "x mandatory", // Ensure products snap to position
         }}
+        onScroll={handleUserInteraction} // Detect scroll interaction
+        onTouchStart={handleUserInteraction} // Detect touch interaction
       >
         {products.map((product) => (
           <div
@@ -81,10 +118,10 @@ const ProductsList = () => {
             />
 
             {/* Product Info */}
-            <h3 className="text-2xl md:h-[14%]  md:text-2xl font-semibold text-[#2E2C2F]  mb-1 ">
+            <h3 className="text-2xl md:h-[14%] md:text-2xl font-semibold text-[#2E2C2F] mb-1">
               {product.productName}
             </h3>
-            <p className="text-[#777] md:h-[16%]   text-lg md:text-base mb-1 ">
+            <p className="text-[#777] md:h-[16%] text-lg md:text-base mb-1">
               {product.description}
             </p>
 
@@ -114,7 +151,10 @@ const ProductsList = () => {
 
       {/* Left Button */}
       <button
-        onClick={() => scrollBy(-330)} // Adjust scroll distance
+        onClick={() => {
+          handleUserInteraction();
+          scrollBy(-getScrollDistance()); // Use responsive scroll distance
+        }}
         className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 text-2xl md:text-4xl text-white bg-gradient-to-r from-[#FF9F6A] to-[#F57C60] shadow-xl rounded-full p-2 md:p-4 hover:bg-gradient-to-r hover:from-[#FF7043] hover:to-[#F44336] transition-all duration-300"
       >
         &lt;
@@ -122,7 +162,10 @@ const ProductsList = () => {
 
       {/* Right Button */}
       <button
-        onClick={() => scrollBy(330)} // Adjust scroll distance
+        onClick={() => {
+          handleUserInteraction();
+          scrollBy(getScrollDistance()); // Use responsive scroll distance
+        }}
         className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 text-2xl md:text-4xl text-white bg-gradient-to-r from-[#FF9F6A] to-[#F57C60] shadow-xl rounded-full p-2 md:p-4 hover:bg-gradient-to-r hover:from-[#FF7043] hover:to-[#F44336] transition-all duration-300"
       >
         &gt;
