@@ -94,7 +94,7 @@ const Cart = () => {
                 <div className="flex justify-between items-center mt-6 border-t  boder-2 border-black  text-black p-4 ">
                   <span className="font-semibold text-xl">Total: </span>
                   <span className="font-semibold text-2xl">
-                    $
+                    ₹
                     {cart.reduce(
                       (total, item) => total + item.price * item.quantity,
                       0

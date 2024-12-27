@@ -91,7 +91,7 @@ const ProductsList = () => {
             {/* Price and Buttons */}
             <div className="flex h-[10%] mt-1 justify-between items-center">
               <span className="text-xl font-semibold text-[#4E4C50]">
-                ${product.price}
+                ₹{product.price}
               </span>
               <div className="flex items-center gap-4">
                 {/* Add to Bag or Remove from Bag Button */}
