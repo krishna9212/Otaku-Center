@@ -63,7 +63,7 @@ function AllProducts() {
             <img
               src={product.imageURL || "https://via.placeholder.com/150"}
               alt={product.productName}
-              className="w-full h-[240px] object-cover rounded-lg mb-4"
+              className="w-full md:h-[70%] object-cover rounded-lg mb-6 shadow-md "
             />
 
             {/* Product Info */}
