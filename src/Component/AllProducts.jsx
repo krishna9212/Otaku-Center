@@ -75,7 +75,7 @@ function AllProducts() {
             {/* Product Action */}
             <div className="flex justify-between items-center mt-2">
               <span className="text-xl font-semibold text-[#4E4C50]">
-                ${product.price}
+                ₹{product.price}
               </span>
               <div className="flex items-center gap-4">
                 {/* Add/Remove to Bag Button */}
