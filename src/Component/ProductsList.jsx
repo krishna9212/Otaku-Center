@@ -25,7 +25,7 @@ const ProductsList = () => {
         });
 
         // Repeat products to simulate infinite scrolling
-        setProducts([fetchedProducts, fetchedProducts, fetchedProducts].flat());
+        setProducts([fetchedProducts].flat());
       } catch (error) {
         console.error("Error fetching products: ", error);
       }
