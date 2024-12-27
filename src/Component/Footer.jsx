@@ -19,18 +19,6 @@ const Footer = () => {
               className="bg-[#FBBF24] text-gray-800 hover:bg-[#EDE9D0] p-4 rounded-full shadow-lg transition-all duration-300"
               type="button"
             >
-              <i className="fab fa-twitter"></i>
-            </button>
-            <button
-              className="bg-[#FBBF24] text-gray-800 hover:bg-[#EDE9D0] p-4 rounded-full shadow-lg transition-all duration-300"
-              type="button"
-            >
-              <i className="fab fa-facebook-square"></i>
-            </button>
-            <button
-              className="bg-[#FBBF24] text-gray-800 hover:bg-[#EDE9D0] p-4 rounded-full shadow-lg transition-all duration-300"
-              type="button"
-            >
               <i className="fab fa-linkedin-in"></i>
             </button>
             <button
