@@ -11,11 +11,11 @@ const AboutUs = () => {
       <div className="max-w-7xl w-full  grid md:grid-cols-2 gap-10">
         {/* Left Section - 3D Object */}
         <div className="flex h-[300px] pb-80 md:pb-0 md:-mt-72 md:h-[450px] w-full   items-center justify-center">
-          <img src={img1} alt="" className="rounded-xl" />
+          <img src={img1} alt="" />
         </div>
 
         {/* Right Section - Content */}
-        <div className="flex flex-col justify-center space-y-6 ">
+        <div className="flex flex-col items-center justify-center  space-y-6 ">
           <h1 className="text-4xl text-center whitespace-nowrap md:text-5xl font-bold leading-tight">
             Welcome to <span className="text-yellow-400">Otaku Center</span>
           </h1>
@@ -34,7 +34,7 @@ const AboutUs = () => {
           </p>
           <button
             onClick={() => (window.location.href = "#products")} // Navigate to the link
-            className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold md:py-3 md:px-6 rounded-lg shadow-lg transform md:hover:scale-x-105 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50"
+            className=" py-3 w-[90%] hover:w-[95%]   bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold rounded-lg shadow-lg transform transition-all duration-1000 ease-in-out focus:outline-none  focus:ring-yellow-500 focus:ring-opacity-50 "
             aria-label="Explore our collection button"
           >
             Explore Our Collection
