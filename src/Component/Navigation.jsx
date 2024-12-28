@@ -22,7 +22,7 @@ function Navigation() {
           className="h-[160%] md:h-[190%] object-cover"
         />
       </div>
-      <div className="right w-1/3 z-0 h-full flex items-center justify-end gap- md:gap-10 px-2 md:px-12">
+      <div className="right w-1/3 z-20 h-full flex items-center justify-end gap- md:gap-10 px-2 md:px-12">
         {/* <Search /> */}
         <LoginSignup />
         {/* <Cart /> */}
