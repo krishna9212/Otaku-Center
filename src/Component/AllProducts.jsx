@@ -124,7 +124,7 @@ function AllProducts() {
       {/* Modal for Product Details */}
       {selectedProduct && (
         <div className="fixed inset-0 h-full w-full bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white  h-[90%] w-[95%] md:h-[90%] md:w-[30%] p-6 rounded-lg shadow-lg relative">
+          <div className="bg-white  h-[90%] w-[95%] flex flex-col justify-center  md:h-[90%] md:w-[30%] p-6 rounded-lg shadow-lg relative">
             {/* Close Button */}
             <button
               onClick={closeModal}
@@ -139,7 +139,7 @@ function AllProducts() {
                 selectedProduct.imageURL || "https://via.placeholder.com/150"
               }
               alt={selectedProduct.productName}
-              className="w-full h-min-[50%] object-cover rounded-lg mb-4"
+              className="w-full h-min-[75%] object-cover rounded-lg mb-4"
             />
             <h2 className="text-3xl font-semibold mb-2">
               {selectedProduct.productName}

@@ -115,10 +115,10 @@ const ProductsList = () => {
               alt={product.productName}
               className="w-full h-[60%] md:h-[50%] object-cover rounded-lg mb-6 shadow-md"
             />
-            <h3 className="text-2xl md:text-2xl font-semibold text-[#2E2C2F] mb-1 overflow-hidden text-ellipsis whitespace-nowrap">
+            <h3 className="text-2xl md:text-2xl font-semibold text-[#2E2C2F] mb-1">
               {product.productName}
             </h3>
-            <p className="text-[#777] text-lg md:text-base mb-1 overflow-hidden text-ellipsis whitespace-nowrap">
+            <p className="text-[#777] text-lg md:text-base mb-1">
               {product.description}
             </p>
             <div className="flex justify-between items-center">
@@ -170,7 +170,7 @@ const ProductsList = () => {
       {/* Modal */}
       {selectedProduct && (
         <div className="fixed inset-0 h-full w-full bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white  h-[90%] w-[95%] md:h-[90%] md:w-[30%] p-6 rounded-lg shadow-lg relative">
+          <div className="bg-white  h-[90%] w-[95%] flex flex-col justify-center  md:h-[90%] md:w-[30%] p-6 rounded-lg shadow-lg relative">
             <button
               onClick={closeModal}
               className="absolute font-bold text-[2rem] top-2 md:top-0 right-4 text-gray-600 hover:text-gray-900"
@@ -180,7 +180,7 @@ const ProductsList = () => {
             <img
               src={selectedProduct.imageURL}
               alt={selectedProduct.productName}
-              className="w-full h-min-[50%] object-cover rounded-lg mb-4"
+              className="w-full h-min-[75%] object-cover rounded-lg mb-4"
             />
             <h2 className="text-3xl font-semibold mb-2">
               {selectedProduct.productName}
