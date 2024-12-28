@@ -68,7 +68,7 @@ const LoginSignup = () => {
   }, []);
 
   return (
-    <div className="relative z-30 inline-block" ref={dropdownRef}>
+    <div className="relative z-0 inline-block" ref={dropdownRef}>
       <button
         onClick={() => setShowDropdown((prev) => !prev)} // Toggle dropdown visibility
         className="p-2 text-2xl outline-none font-thin rounded-md transition-all"
@@ -85,6 +85,7 @@ const LoginSignup = () => {
           strokeLinecap="square"
           strokeLinejoin="miter"
           fill="none"
+          className="z-0"
         >
           <title id="userIconTitle">User</title>
           <path
@@ -97,7 +98,7 @@ const LoginSignup = () => {
 
       {/* Dropdown content */}
       {showDropdown && (
-        <div className="p-8 absolute z-30 -left-[18rem] top-16 bg-white text-black shadow-2xl rounded-md">
+        <div className="p-8 absolute z-0 -left-[18rem] top-16 bg-white text-black shadow-2xl rounded-md">
           {user ? (
             <>
               <h2 className="text-2xl font-bold mb-4 whitespace-nowrap">
