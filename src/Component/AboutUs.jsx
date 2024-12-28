@@ -32,14 +32,13 @@ const AboutUs = () => {
             collector or just starting your journey, Otaku Center is here to
             help you build your dream collection.
           </p>
-          <a href="#products">
-            <button
-              className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold  py-3 md:py-3 md:px-6 rounded-lg shadow-lg transform md:hover:scale-x-105 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50"
-              aria-label="Explore our collection button"
-            >
-              Explore Our Collection
-            </button>
-          </a>
+          <button
+            onClick={() => (window.location.href = "#products")} // Navigate to the link
+            className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold md:py-3 md:px-6 rounded-lg shadow-lg transform md:hover:scale-x-105 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50"
+            aria-label="Explore our collection button"
+          >
+            Explore Our Collection
+          </button>
         </div>
       </div>
     </div>
