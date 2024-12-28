@@ -65,27 +65,40 @@ const Cart = () => {
   const handleAddressSubmit = (e) => {
     e.preventDefault();
 
+    // Prepare cart information
+    const cartDetails = cart.map((item) => ({
+      productName: item.productName,
+      quantity: item.quantity,
+      price: item.price,
+      total: item.price * item.quantity,
+    }));
+
+    // Calculate total price
+    const totalPrice = cart.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+
+    // Combine form data and cart details
+    const payload = {
+      ...formData,
+      cartDetails,
+      totalPrice,
+    };
+
     fetch("https://formspree.io/f/mbllovbq", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        name: formData.name,
-        address: formData.address,
-        landmark: formData.landmark,
-        alternativePhone: formData.alternativePhone,
-        deliveryTime: formData.deliveryTime,
-        nearby: formData.nearby,
-        city: formData.city,
-        postalCode: formData.postalCode,
-        country: formData.country,
-      }),
+      body: JSON.stringify(payload),
     })
       .then((response) => {
         if (response.ok) {
           console.log("Form submitted successfully!");
           alert("Form submitted successfully!");
+          clearCart(); // Clear the cart after successful submission
+          setShowAddressForm(false);
         } else {
           console.error("Error sending form");
           alert("Error submitting the form. Try again.");
