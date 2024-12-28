@@ -124,7 +124,7 @@ function AllProducts() {
       {/* Modal for Product Details */}
       {selectedProduct && (
         <div className="fixed inset-0 h-full w-full bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white h-min-[90%] w-[90%] md:h-min-[90%] md:w-[30%] p-6 rounded-lg shadow-lg relative">
+          <div className="bg-white  h-[90%] w-[95%] md:h-[90%] md:w-[30%] p-6 rounded-lg shadow-lg relative">
             {/* Close Button */}
             <button
               onClick={closeModal}
