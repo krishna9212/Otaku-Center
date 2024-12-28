@@ -151,7 +151,7 @@ const ProductsList = () => {
           handleUserInteraction();
           scrollBy(-getScrollDistance());
         }}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 text-2xl md:text-4xl text-white bg-gradient-to-r from-[#FF9F6A] to-[#F57C60] shadow-xl rounded-full p-2 md:p-4 hover:bg-gradient-to-r hover:from-[#FF7043] hover:to-[#F44336] transition-all duration-300"
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-0 text-2xl md:text-4xl text-white bg-gradient-to-r from-[#FF9F6A] to-[#F57C60] shadow-xl rounded-full p-2 md:p-4 hover:bg-gradient-to-r hover:from-[#FF7043] hover:to-[#F44336] transition-all duration-300"
       >
         &lt;
       </button>
@@ -162,7 +162,7 @@ const ProductsList = () => {
           handleUserInteraction();
           scrollBy(getScrollDistance());
         }}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 text-2xl md:text-4xl text-white bg-gradient-to-r from-[#FF9F6A] to-[#F57C60] shadow-xl rounded-full p-2 md:p-4 hover:bg-gradient-to-r hover:from-[#FF7043] hover:to-[#F44336] transition-all duration-300"
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-0 text-2xl md:text-4xl text-white bg-gradient-to-r from-[#FF9F6A] to-[#F57C60] shadow-xl rounded-full p-2 md:p-4 hover:bg-gradient-to-r hover:from-[#FF7043] hover:to-[#F44336] transition-all duration-300"
       >
         &gt;
       </button>

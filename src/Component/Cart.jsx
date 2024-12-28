@@ -57,7 +57,7 @@ const Cart = ({ showLoginModal, setShowLoginModal }) => {
         </svg>
       </button>
       {showDropdown && (
-        <div className="absolute right-0 top-12 w-[24rem] h-[35rem]  bg-white text-black rounded-lg shadow-lg px-4 pb-12 no-scrollbar pt-4 overflow-auto">
+        <div className="absolute -right-2 bottom-12 w-[24rem] h-[35rem] shadow-2xl  bg-[#F6CF5A] text-black rounded-lg  px-4 pb-12 no-scrollbar pt-4 overflow-auto">
           {/* Cart content goes here */}
           <div className="w-full h-full flex flex-col space-y-4">
             <h2 className="text-2xl font-bold mb-4">Your Cart</h2>
