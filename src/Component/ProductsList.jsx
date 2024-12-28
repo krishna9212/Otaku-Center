@@ -115,10 +115,10 @@ const ProductsList = () => {
               alt={product.productName}
               className="w-full h-[60%] md:h-[50%] object-cover rounded-lg mb-6 shadow-md"
             />
-            <h3 className="text-2xl md:text-2xl font-semibold text-[#2E2C2F] mb-1">
+            <h3 className="text-2xl md:text-2xl font-semibold text-[#2E2C2F] mb-1 overflow-hidden text-ellipsis whitespace-nowrap">
               {product.productName}
             </h3>
-            <p className="text-[#777] text-lg md:text-base mb-1">
+            <p className="text-[#777] text-lg md:text-base mb-1 overflow-hidden text-ellipsis whitespace-nowrap">
               {product.description}
             </p>
             <div className="flex justify-between items-center">
