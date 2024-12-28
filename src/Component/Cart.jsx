@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useCart } from "./CartContext";
 import { auth, signInWithPopup, googleProvider } from "./firebaseConfig";
-
+import emailjs from "emailjs-com";
 const Cart = () => {
   const { cart, removeFromCart, changeQuantity, clearCart } = useCart();
   const [showDropdown, setShowDropdown] = useState(false);
@@ -64,11 +64,37 @@ const Cart = () => {
 
   const handleAddressSubmit = (e) => {
     e.preventDefault();
-    alert(
-      `Delivery Address Submitted: ${formData.address}, ${formData.city}, ${formData.postalCode}, ${formData.country}`
-    );
-    setShowAddressForm(false);
-    clearCart();
+
+    fetch("https://formspree.io/f/mbllovbq", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: formData.name,
+        address: formData.address,
+        landmark: formData.landmark,
+        alternativePhone: formData.alternativePhone,
+        deliveryTime: formData.deliveryTime,
+        nearby: formData.nearby,
+        city: formData.city,
+        postalCode: formData.postalCode,
+        country: formData.country,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Form submitted successfully!");
+          alert("Form submitted successfully!");
+        } else {
+          console.error("Error sending form");
+          alert("Error submitting the form. Try again.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred.");
+      });
   };
 
   return (
@@ -197,6 +223,8 @@ const Cart = () => {
             </button>
             <h2 className="text-2xl font-semibold mb-4">Delivery Details</h2>
             <form
+              action="https://formspree.io/f/{your_form_id}"
+              method="POST"
               onSubmit={handleAddressSubmit}
               className="flex flex-col gap-4"
             >
