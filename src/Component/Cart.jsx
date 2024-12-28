@@ -38,13 +38,15 @@ const Cart = () => {
 
   const handleGoogleLogin = async () => {
     try {
+      console.log("Attempting Google Login...");
       const userCredential = await signInWithPopup(auth, googleProvider);
       const userData = userCredential.user;
+      console.log("Google Login Successful:", userData);
       setUser(userData);
       alert("Successfully signed in with Google.");
     } catch (error) {
-      setError(error.message);
       console.error("Google login failed:", error);
+      setError(error.message);
     }
   };
 
@@ -64,48 +66,25 @@ const Cart = () => {
 
   const handleAddressSubmit = (e) => {
     e.preventDefault();
-
-    // Prepare cart information
-    const cartDetails = cart.map((item) => ({
-      productName: item.productName,
-      quantity: item.quantity,
-      price: item.price,
-      total: item.price * item.quantity,
-    }));
-
-    // Calculate total price
-    const totalPrice = cart.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
-
-    // Combine form data and cart details
-    const payload = {
-      ...formData,
-      cartDetails,
-      totalPrice,
-    };
+    console.log("Submitting form with data:", formData);
 
     fetch("https://formspree.io/f/mbllovbq", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
     })
       .then((response) => {
+        console.log("Formspree response:", response);
         if (response.ok) {
-          console.log("Form submitted successfully!");
           alert("Form submitted successfully!");
-          clearCart(); // Clear the cart after successful submission
+          clearCart();
           setShowAddressForm(false);
         } else {
-          console.error("Error sending form");
-          alert("Error submitting the form. Try again.");
+          alert("Error submitting the form.");
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.error("Error submitting form:", error);
         alert("An error occurred.");
       });
   };
