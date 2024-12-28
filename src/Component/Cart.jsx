@@ -1,11 +1,15 @@
-// Cart.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { useCart } from "./CartContext"; // Import useCart hook
+import LoginSignup from "./LoginSignup"; // Import the LoginSignup component
 
-const Cart = () => {
+const Cart = ({ showLoginModal, setShowLoginModal }) => {
   const { cart, removeFromCart, changeQuantity } = useCart(); // Access cart and actions from context
   const [showDropdown, setShowDropdown] = useState(false);
+  const [warningMessage, setWarningMessage] = useState(""); // For warning message
   const dropdownRef = useRef(null);
+
+  // Check if the user is registered/authenticated
+  const isUserRegistered = localStorage.getItem("user");
 
   // Close the dropdown when clicking outside of it
   useEffect(() => {
@@ -20,6 +24,17 @@ const Cart = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Handle the payment button click
+  const handlePayment = () => {
+    if (isUserRegistered) {
+      // Proceed with payment logic here
+      alert("Proceeding with payment...");
+    } else {
+      setWarningMessage("Please log in first to proceed with the payment.");
+      setShowLoginModal(true); // Open the login modal directly
+    }
+  };
 
   return (
     <div className="relative z-30 mt-2" ref={dropdownRef}>
@@ -42,7 +57,7 @@ const Cart = () => {
         </svg>
       </button>
       {showDropdown && (
-        <div className="absolute right-0 top-12 w-[24rem] h-min-[35rem]  bg-white text-black rounded-lg shadow-lg px-4 pb-12 pt-4 overflow-auto">
+        <div className="absolute right-0 top-12 w-[24rem] h-[35rem]  bg-white text-black rounded-lg shadow-lg px-4 pb-12 no-scrollbar pt-4 overflow-auto">
           {/* Cart content goes here */}
           <div className="w-full h-full flex flex-col space-y-4">
             <h2 className="text-2xl font-bold mb-4">Your Cart</h2>
@@ -101,8 +116,19 @@ const Cart = () => {
                     )}
                   </span>
                 </div>
+
+                {/* Warning Message */}
+                {warningMessage && (
+                  <div className="bg-red-500 text-white p-3 rounded-lg mb-4">
+                    {warningMessage}
+                  </div>
+                )}
+
                 <div className="h-4 w-full ">
-                  <button className="bg-black text-white p-3 w-full rounded-xl">
+                  <button
+                    onClick={handlePayment}
+                    className="bg-black text-white p-3 mb-6 w-full rounded-xl"
+                  >
                     Pay
                   </button>
                 </div>
