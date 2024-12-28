@@ -1,21 +1,32 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useCart } from "./CartContext"; // Import useCart hook
-import { auth, signInWithPopup, googleProvider } from "./firebaseConfig"; // Ensure correct path to firebaseConfig
+import { useCart } from "./CartContext";
+import { auth, signInWithPopup, googleProvider } from "./firebaseConfig";
 
 const Cart = () => {
-  const { cart, removeFromCart, changeQuantity, clearCart } = useCart(); // Access cart and actions from context
+  const { cart, removeFromCart, changeQuantity, clearCart } = useCart();
   const [showDropdown, setShowDropdown] = useState(false);
-  const [warningMessage, setWarningMessage] = useState(""); // For warning message
-  const [userKey, setUserKey] = useState(null); // State to track user's key
+  const [warningMessage, setWarningMessage] = useState("");
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    address: "",
+    landmark: "",
+    alternativePhone: "",
+    deliveryTime: "",
+    nearby: "",
+    city: "",
+    postalCode: "",
+    country: "",
+  });
   const dropdownRef = useRef(null);
-  const [user, setUser] = useState(null); // Current user state
-  const [error, setError] = useState(null); // Add error state
 
   // Close the dropdown when clicking outside of it
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropdown(false); // Close the dropdown if clicking outside
+        setShowDropdown(false);
       }
     };
 
@@ -24,43 +35,46 @@ const Cart = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   const handleGoogleLogin = async () => {
     try {
-      const userCredential = await signInWithPopup(auth, googleProvider); // Only call this once
+      const userCredential = await signInWithPopup(auth, googleProvider);
       const userData = userCredential.user;
-      localStorage.setItem("user", JSON.stringify(userData)); // Save user info to localStorage
       setUser(userData);
-      handleClose(); // Close dropdown after login
-      alert("Google login successful");
+      alert("Successfully signed in with Google.");
     } catch (error) {
-      setError(error.message); // Display error message
+      setError(error.message);
       console.error("Google login failed:", error);
     }
   };
-  // Handle the payment button click
-  const handlePayment = () => {
-    if (!userKey) {
-      setWarningMessage("You do not have a valid user key. Payment blocked.");
-      return; // Block payment if no key is available
-    }
 
+  const handleProceedPayment = () => {
     if (cart.length === 0) {
-      setWarningMessage(
-        "Your cart is empty! Add some items before proceeding."
-      );
-      return; // Block payment if the cart is empty
+      setWarningMessage("Your cart is empty. Please add items to proceed.");
+      return;
     }
+    setWarningMessage("");
+    setShowAddressForm(true);
+  };
 
-    // Implement payment logic (assuming a successful payment here)
-    alert("Proceeding with payment...");
-    clearCart(); // Clear cart after payment
-    setWarningMessage(""); // Reset any warnings after payment
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleAddressSubmit = (e) => {
+    e.preventDefault();
+    alert(
+      `Delivery Address Submitted: ${formData.address}, ${formData.city}, ${formData.postalCode}, ${formData.country}`
+    );
+    setShowAddressForm(false);
+    clearCart();
   };
 
   return (
     <div className="relative z-30 mt-2" ref={dropdownRef}>
       <button
-        onClick={() => setShowDropdown(!showDropdown)} // Toggle the dropdown
+        onClick={() => setShowDropdown(!showDropdown)}
         className="outline-none focus:outline-none"
       >
         <svg
@@ -77,6 +91,7 @@ const Cart = () => {
           <path d="M8 7a4 4 0 1 1 8 0" />
         </svg>
       </button>
+
       {showDropdown && (
         <div className="absolute -right-2 bottom-12 w-[24rem] h-[32rem] shadow-2xl bg-[#f6cd54] text-black rounded-lg px-4 pb-12 no-scrollbar pt-4 overflow-auto">
           {/* Cart content goes here */}
@@ -158,7 +173,7 @@ const Cart = () => {
 
                 <div className="h-4 w-full">
                   <button
-                    onClick={handlePayment}
+                    onClick={handleProceedPayment}
                     className="bg-black text-white p-3 mb-6 w-full  rounded-xl"
                   >
                     Pay
@@ -166,6 +181,103 @@ const Cart = () => {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Delivery Address Form */}
+      {showAddressForm && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+          <div className="bg-[#f6cd54] p-6 rounded-lg shadow-lg w-[90%] max-w-md relative">
+            <button
+              onClick={() => setShowAddressForm(false)}
+              className="absolute top-2 right-2 text-gray-700 text-2xl font-bold"
+            >
+              ×
+            </button>
+            <h2 className="text-2xl font-semibold mb-4">Delivery Details</h2>
+            <form
+              onSubmit={handleAddressSubmit}
+              className="flex flex-col gap-4"
+            >
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                value={formData.name}
+                onChange={handleInputChange}
+                pattern="^[a-zA-Z\s]+$"
+                title="Please enter a valid full name (letters and spaces only)."
+                required
+                className="border p-2 rounded "
+              />
+
+              <input
+                type="text"
+                name="address"
+                placeholder="Address (Area and Street) and City"
+                value={formData.address}
+                onChange={handleInputChange}
+                pattern="^[a-zA-Z0-9\s,.'-]{10,}$"
+                title="Please enter a valid address (minimum 10 characters)."
+                required
+                className="border p-2 rounded"
+              />
+
+              <input
+                type="text"
+                name="nearby"
+                placeholder="Nearby Landmark"
+                value={formData.nearby}
+                onChange={handleInputChange}
+                pattern="^[a-zA-Z0-9\s,.'-]{5,}$"
+                title="Please enter a valid landmark (minimum 5 characters)."
+                required
+                className="border p-2 rounded"
+              />
+
+              <input
+                type="text"
+                name="state"
+                placeholder="State"
+                value={formData.state}
+                onChange={handleInputChange}
+                pattern="^[a-zA-Z\s]+$"
+                title="Please enter a valid state name (letters and spaces only)."
+                required
+                className="border p-2 rounded"
+              />
+
+              <input
+                type="text"
+                name="postalCode"
+                placeholder="Postal Code"
+                value={formData.postalCode}
+                onChange={handleInputChange}
+                pattern="^\d{5,6}$"
+                title="Please enter a valid postal code (5 or 6 digits)."
+                required
+                className="border p-2 rounded"
+              />
+
+              <input
+                type="tel"
+                name="alternativePhone"
+                placeholder="Phone Number"
+                value={formData.alternativePhone}
+                onChange={handleInputChange}
+                pattern="^\d{10}$"
+                title="Please enter a valid 10-digit phone number."
+                required
+                className="border p-2 rounded"
+              />
+              <button
+                type="submit"
+                className="bg-black text-white py-2 rounded-md hover:bg-gray-900 hover:border-white  transition-all duration-500  "
+              >
+                Submit Address
+              </button>
+            </form>
           </div>
         </div>
       )}
