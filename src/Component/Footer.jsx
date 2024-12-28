@@ -15,12 +15,12 @@ const Footer = () => {
             Join our vibrant community and never miss out on updates.
           </p>
           <div className="flex space-x-6">
-            <button
+            {/* <button
               className="bg-[#FBBF24] text-gray-800 hover:bg-[#EDE9D0] p-4 rounded-full shadow-lg transition-all duration-300"
               type="button"
             >
               <i className="fab fa-linkedin-in"></i>
-            </button>
+            </button> */}
             <button
               className="bg-[#FBBF24] text-gray-800 hover:bg-[#EDE9D0] p-4 rounded-full shadow-lg transition-all duration-300"
               type="button"
