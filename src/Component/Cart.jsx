@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useCart } from "./CartContext"; // Import useCart hook
-import LoginSignup from "./LoginSignup"; // Import the LoginSignup component
+import { auth, signInWithPopup, googleProvider } from "./firebaseConfig"; // Ensure correct path to firebaseConfig
 
-const Cart = ({ showLoginModal, setShowLoginModal }) => {
-  const { cart, removeFromCart, changeQuantity } = useCart(); // Access cart and actions from context
+const Cart = () => {
+  const { cart, removeFromCart, changeQuantity, clearCart } = useCart(); // Access cart and actions from context
   const [showDropdown, setShowDropdown] = useState(false);
   const [warningMessage, setWarningMessage] = useState(""); // For warning message
+  const [userKey, setUserKey] = useState(null); // State to track user's key
   const dropdownRef = useRef(null);
-
-  // Check if the user is registered/authenticated
-  const isUserRegistered = localStorage.getItem("user");
+  const [user, setUser] = useState(null); // Current user state
+  const [error, setError] = useState(null); // Add error state
 
   // Close the dropdown when clicking outside of it
   useEffect(() => {
@@ -24,16 +24,37 @@ const Cart = ({ showLoginModal, setShowLoginModal }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+  const handleGoogleLogin = async () => {
+    try {
+      const userCredential = await signInWithPopup(auth, googleProvider); // Only call this once
+      const userData = userCredential.user;
+      localStorage.setItem("user", JSON.stringify(userData)); // Save user info to localStorage
+      setUser(userData);
+      handleClose(); // Close dropdown after login
+      alert("Google login successful");
+    } catch (error) {
+      setError(error.message); // Display error message
+      console.error("Google login failed:", error);
+    }
+  };
   // Handle the payment button click
   const handlePayment = () => {
-    if (isUserRegistered) {
-      // Proceed with payment logic here
-      alert("Proceeding with payment...");
-    } else {
-      setWarningMessage("Please log in first to proceed with the payment.");
-      setShowLoginModal(true); // Open the login modal directly
+    if (!userKey) {
+      setWarningMessage("You do not have a valid user key. Payment blocked.");
+      return; // Block payment if no key is available
     }
+
+    if (cart.length === 0) {
+      setWarningMessage(
+        "Your cart is empty! Add some items before proceeding."
+      );
+      return; // Block payment if the cart is empty
+    }
+
+    // Implement payment logic (assuming a successful payment here)
+    alert("Proceeding with payment...");
+    clearCart(); // Clear cart after payment
+    setWarningMessage(""); // Reset any warnings after payment
   };
 
   return (
@@ -57,7 +78,7 @@ const Cart = ({ showLoginModal, setShowLoginModal }) => {
         </svg>
       </button>
       {showDropdown && (
-        <div className="absolute -right-2 bottom-12 w-[24rem] h-[35rem] shadow-2xl  bg-[#F6CF5A] text-black rounded-lg  px-4 pb-12 no-scrollbar pt-4 overflow-auto">
+        <div className="absolute -right-2 bottom-12 w-[24rem] h-[32rem] shadow-2xl bg-[#f6cd54] text-black rounded-lg px-4 pb-12 no-scrollbar pt-4 overflow-auto">
           {/* Cart content goes here */}
           <div className="w-full h-full flex flex-col space-y-4">
             <h2 className="text-2xl font-bold mb-4">Your Cart</h2>
@@ -106,7 +127,7 @@ const Cart = ({ showLoginModal, setShowLoginModal }) => {
                   </div>
                 ))}
                 {/* Cart Total */}
-                <div className="flex justify-between items-center mt-6 border-t  boder-2 border-black  text-black p-4 ">
+                <div className="flex justify-between items-center mt-6 border-t border-b border-black text-black p-4">
                   <span className="font-semibold text-xl">Total: </span>
                   <span className="font-semibold text-2xl">
                     ₹
@@ -119,15 +140,26 @@ const Cart = ({ showLoginModal, setShowLoginModal }) => {
 
                 {/* Warning Message */}
                 {warningMessage && (
-                  <div className="bg-red-500 text-white p-3 rounded-lg mb-4">
+                  <div className="bg-[#f6cd54] text-red-500 p-3 rounded-lg mb-4 flex flex-col gap-2 ">
                     {warningMessage}
+                    <button
+                      onClick={handleGoogleLogin} // Google login button
+                      className="flex justify-center text-lg font-normal items-center text-gray-800 gap-2"
+                    >
+                      <p> Login with Google</p>
+                      <img
+                        src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA"
+                        alt="google"
+                        className="h-10 w-7  rounded-full py-2 transition-all bg-[#f6cd54]"
+                      />
+                    </button>
                   </div>
                 )}
 
-                <div className="h-4 w-full ">
+                <div className="h-4 w-full">
                   <button
                     onClick={handlePayment}
-                    className="bg-black text-white p-3 mb-6 w-full rounded-xl"
+                    className="bg-black text-white p-3 mb-6 w-full  rounded-xl"
                   >
                     Pay
                   </button>
