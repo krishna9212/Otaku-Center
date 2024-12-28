@@ -236,7 +236,7 @@ const Cart = () => {
             </button>
             <h2 className="text-2xl font-semibold mb-4">Delivery Details</h2>
             <form
-              action="https://formspree.io/f/{your_form_id}"
+              action="https://formspree.io/f/mbllovbq"
               method="POST"
               onSubmit={handleAddressSubmit}
               className="flex flex-col gap-4"
