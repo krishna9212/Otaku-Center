@@ -106,19 +106,19 @@ const ProductsList = () => {
         {products.map((product) => (
           <div
             key={product.id}
-            className="flex-shrink-0 w-[350px] md:w-[300px] h-[600px] md:h-[500px] p-6 bg-white rounded-2xl shadow-lg transition-transform duration-300 ease-in-out"
+            className="flex-shrink-0 w-[350px] md:w-[300px] flex flex-col justify-center h-[600px] md:h-[500px] p-6 bg-white rounded-2xl shadow-lg transition-transform duration-300 ease-in-out"
             style={{ scrollSnapAlign: "center" }}
             onClick={() => handleProductClick(product)}
           >
             <img
               src={product.imageURL}
               alt={product.productName}
-              className="w-full h-[60%] md:h-[50%] object-cover rounded-lg mb-6 shadow-md"
+              className="w-min-full h-[75%] md:h-[75%] object-cover rounded-lg mb-6 shadow-md"
             />
-            <h3 className="text-2xl md:text-2xl font-semibold text-[#2E2C2F] mb-1">
+            <h3 className="text-2xl md:text-2xl font-semibold text-[#2E2C2F] mb-3 overflow-hidden text-ellipsis whitespace-nowrap">
               {product.productName}
             </h3>
-            <p className="text-[#777] text-lg md:text-base mb-1">
+            <p className="text-[#777] text-lg md:text-base  overflow-hidden mb-6 text-ellipsis whitespace-nowrap">
               {product.description}
             </p>
             <div className="flex justify-between items-center">
