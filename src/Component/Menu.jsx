@@ -23,7 +23,6 @@ const Menu = () => {
             link: "#add-product",
             onClick: () => setShowAdminPanel(!showAdminPanel),
           },
-          { name: "Show Users", link: "#users" },
         ]
       : []), // Add admin items if isAdmin is true
   ];
