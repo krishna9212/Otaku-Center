@@ -53,14 +53,6 @@ function AllProducts() {
 
   return (
     <>
-      {/* Header */}
-      <h1
-        id="products"
-        className="capitalize bg-[#faeb8a] text-center font-normal text-[3rem] pt-3"
-      >
-        All Products
-      </h1>
-
       {/* Product List */}
       <div className="grid h-min-full bg-[#faec94] grid-cols-1 sm:grid-cols-4 gap-6 p-6">
         {products.map((product) => (
