@@ -23,7 +23,7 @@ function HeroPage() {
 
   const handleWhatsAppClick = () => {
     const phoneNumber = "+919859927668"; // Your phone number here
-    const message = "Hello, I need help with my cart!"; // Optional pre-filled message
+    const message = "Hello..."; // Optional pre-filled message
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
       message
     )}`;
@@ -121,7 +121,7 @@ function HeroPage() {
 
       {/* WhatsApp Button */}
       <div
-        className="whatsapp-icon fixed bottom-24 right-8 h-14 w-14 bg-[#25D366] rounded-full flex justify-center items-center cursor-pointer"
+        className="whatsapp-icon fixed bottom-24  right-8 h-14 w-14 bg-[#25D366] rounded-full flex justify-center items-center cursor-pointer"
         onClick={handleWhatsAppClick}
         style={{ boxShadow: "0px 4px 10px rgba(0,0,0,0.3)" }}
       >
