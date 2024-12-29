@@ -8,8 +8,9 @@ import video4 from "./../assets/videos/onePiece.mp4";
 import Cart from "./Cart";
 
 function HeroPage() {
+  // State for controlling mute and the active video
   const [isMuted, setIsMuted] = useState(true);
-  const [activeVideo, setActiveVideo] = useState(video1);
+  const [activeVideo, setActiveVideo] = useState(video1); // Default video
 
   const toggleMute = () => {
     setIsMuted(!isMuted);
@@ -52,10 +53,10 @@ function HeroPage() {
 
       {/* Hero Content */}
       <div className="HeroUpper z-10 w-full h-[80%] flex flex-col justify-end items-start relative px-[4rem]">
-        <h1 className="text-[2.1rem] md:text-[6rem] font-black text-white">
+        <h1 className="text-[2.1rem] whitespace-nowrap md:text-[6rem] capitalize font-black text-white">
           Relive the Madness!
         </h1>
-        <p className="text-[0.9rem] text-white">
+        <p className="font-normal text-[0.9rem] w-full pl-1 md:pl-2 text-white">
           Grab Goku, Luffy, and All the Icons — Because True Fans Don't Just
           Watch, They Collect!
         </p>
@@ -65,39 +66,57 @@ function HeroPage() {
       </div>
 
       {/* Hero Options */}
-      <div className="HeroOptions z-10 w-full mt-[2rem] p-1 flex justify-center items-center gap-2 relative">
-        {/* Video selection images */}
-        {[
-          { image: image1, video: video1 },
-          { image: image2, video: video2 },
-          { image: image4, video: video4 },
-        ].map(({ image, video }, index) => (
-          <div
-            key={index}
-            className={`box h-full w-[25%] md:w-[15%] rounded-xl p-[0.20rem] transition-all duration-300 overflow-hidden ${
-              activeVideo === video
-                ? "border-white opacity-100 border-2"
-                : "opacity-50 border-none"
-            }`}
-            onClick={() => changeVideo(video)}
-          >
-            <img
-              src={image}
-              className="h-full w-full object-cover rounded-xl"
-            />
-          </div>
-        ))}
+      <div className="HeroOptions z-10 w-full mt-[2rem] md:mt-0 h-[13%] md:h-[20%] p-1 flex justify-center items-center gap-2 relative">
+        {/* Image 1 */}
+        <div
+          className={`h-full w-[25%] md:w-[15%] rounded-xl p-[0.20rem] transition-all duration-300 overflow-hidden ${
+            activeVideo === video1
+              ? "border-white opacity-100 border-2"
+              : "opacity-50 border-none"
+          }`}
+          onClick={() => changeVideo(video1)}
+        >
+          <img src={image1} className="h-full w-full object-cover rounded-xl" />
+        </div>
+
+        {/* Image 2 */}
+        <div
+          className={`h-full w-[25%] md:w-[15%] rounded-xl p-[0.20rem] transition-all duration-300 overflow-hidden ${
+            activeVideo === video2
+              ? "border-white opacity-100 border-2"
+              : "opacity-50 border-none"
+          }`}
+          onClick={() => changeVideo(video2)}
+        >
+          <img src={image2} className="h-full w-full object-cover rounded-xl" />
+        </div>
+
+        {/* Image 4 */}
+        <div
+          className={`h-full w-[25%] md:w-[15%] rounded-xl p-[0.20rem] transition-all duration-300 overflow-hidden ${
+            activeVideo === video4
+              ? "border-white opacity-100"
+              : "opacity-50 border-none"
+          }`}
+          onClick={() => changeVideo(video4)}
+        >
+          <img
+            src={image4}
+            className="h-full w-full object-cover rounded-xl"
+            alt="Luffy"
+          />
+        </div>
       </div>
 
-      {/* Cart Icon */}
-      <div className="carticon fixed bottom-8 z-40 right-8 h-14 w-14 bg-[#F6CF5A] rounded-full flex justify-center items-center cursor-pointer">
+      {/* Cart Icon in Bottom Right Corner */}
+      <div className="carticon fixed bottom-8 right-8 h-14 w-14 bg-[#F6CF5A] rounded-full flex justify-center items-center cursor-pointer">
         <Cart />
       </div>
 
       {/* WhatsApp Button */}
       <div
         className="whatsapp-icon fixed bottom-24 z-40 right-8 text-2xl h-14 w-14 bg-[#25D366] rounded-full flex justify-center items-center cursor-pointer"
-        onClick={() => handleWhatsAppClick()}
+        onClick={handleWhatsAppClick}
         style={{ boxShadow: "0px 4px 10px rgba(0,0,0,0.3)" }}
       >
         <i className="fa-brands fa-whatsapp" />
