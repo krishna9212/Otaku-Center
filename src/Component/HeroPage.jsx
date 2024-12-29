@@ -106,7 +106,7 @@ function HeroPage() {
 
       {/* Cart Icon in Bottom Right Corner */}
       <div className="carticon fixed bottom-8 right-8  h-14 w-14 bg-[#F6CF5A] rounded-full flex justify-center items-center cursor-pointer">
-        {/* <Cart /> */}
+        <Cart />
       </div>
     </div>
   );

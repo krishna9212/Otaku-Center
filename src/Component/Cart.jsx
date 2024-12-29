@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useCart } from "./CartContext";
-import { auth, signInWithPopup, googleProvider } from "./firebaseConfig";
-import emailjs from "emailjs-com";
+import { auth, signInWithPopup, googleProvider, db } from "./firebaseConfig";
+import { doc, setDoc, collection } from "firebase/firestore"; // Import Firestore methods
+
 const Cart = () => {
   const { cart, removeFromCart, changeQuantity, clearCart } = useCart();
   const [showDropdown, setShowDropdown] = useState(false);
@@ -9,62 +10,22 @@ const Cart = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [showAddressForm, setShowAddressForm] = useState(false);
+  const [dontHaveAddress, setdontHaveAddress] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     address: "",
     landmark: "",
     alternativePhone: "",
-    deliveryTime: "",
-    nearby: "",
     city: "",
     postalCode: "",
-    country: "",
+    state: "",
   });
   const dropdownRef = useRef(null);
 
-  // Close the dropdown when clicking outside of it
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropdown(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const handleGoogleLogin = async () => {
-    try {
-      const userCredential = await signInWithPopup(auth, googleProvider);
-      const userData = userCredential.user;
-      setUser(userData);
-      alert("Successfully signed in with Google.");
-    } catch (error) {
-      setError(error.message);
-      console.error("Google login failed:", error);
-    }
-  };
-
-  const handleProceedPayment = () => {
-    if (cart.length === 0) {
-      setWarningMessage("Your cart is empty. Please add items to proceed.");
-      return;
-    }
-    setWarningMessage("");
-    setShowAddressForm(true);
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
+  // Move handleAddressSubmit function here
   const handleAddressSubmit = (e) => {
     e.preventDefault();
-
+    localStorage.setItem("customerAddress", JSON.stringify(formData));
     // Prepare cart information
     const cartDetails = cart.map((item) => ({
       productName: item.productName,
@@ -85,29 +46,109 @@ const Cart = () => {
       cartDetails,
       totalPrice,
     };
+    setdontHaveAddress(false);
+    setShowAddressForm(false);
+    console.log(dontHaveAddress);
+    console.log(payload);
+  };
 
-    fetch("https://formspree.io/f/mbllovbq", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log("Form submitted successfully!");
-          alert("Form submitted successfully!");
-          clearCart(); // Clear the cart after successful submission
-          setShowAddressForm(false);
-        } else {
-          console.error("Error sending form");
-          alert("Error submitting the form. Try again.");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        alert("An error occurred.");
-      });
+  // UseEffect hooks
+  useEffect(() => {
+    const storedAddress = JSON.parse(localStorage.getItem("customerAddress"));
+    if (storedAddress) {
+      setFormData(storedAddress);
+      setShowAddressForm(false);
+      setdontHaveAddress(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (localStorage.getItem("customerAddress")) {
+      setdontHaveAddress(true);
+    } else {
+      setdontHaveAddress(false);
+    }
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dontHaveAddress]);
+
+  const handleGoogleLogin = async () => {
+    try {
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      const userData = userCredential.user;
+      setUser(userData);
+      alert("Successfully signed in with Google.");
+    } catch (error) {
+      setError(error.message);
+      console.error("Google login failed:", error);
+    }
+  };
+
+  const handleProceedPayment = async (e) => {
+    e.preventDefault();
+    const user = localStorage.getItem("user");
+    const savedAddress = localStorage.getItem("customerAddress");
+
+    if (user && savedAddress) {
+      const cartDetails = cart.map((item) => ({
+        productName: item.productName,
+        quantity: item.quantity,
+        price: item.price,
+        total: item.price * item.quantity,
+      }));
+
+      const totalPrice = cart.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+
+      const payload = {
+        ...formData,
+        cartDetails,
+        totalPrice,
+        userId: user, // You can store the user ID if needed
+        timestamp: new Date().toISOString(), // Optional: Store the time when the order is placed
+      };
+
+      // Save the payload to Firestore
+      try {
+        // Get a reference to the orders collection
+        const ordersRef = collection(db, "orders");
+
+        // Create a new document with a unique ID in the 'orders' collection
+        await setDoc(doc(ordersRef), payload);
+
+        console.log("Order saved to Firestore successfully!");
+
+        // Optionally, store the address in localStorage
+        localStorage.setItem("customerAddress", JSON.stringify(formData));
+        alert("your order is placed !");
+        setdontHaveAddress(false);
+      } catch (error) {
+        console.error("Error saving order to Firestore:", error);
+        setWarningMessage(
+          "There was an issue processing your order. Please try again."
+        );
+      }
+    } else {
+      setdontHaveAddress(true);
+      setWarningMessage(
+        "Please login and provide your address to proceed with payment."
+      );
+      return;
+    }
+  };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   return (
@@ -193,6 +234,7 @@ const Cart = () => {
                 </div>
 
                 {/* Warning Message */}
+                {/* Warning Message */}
                 {warningMessage && (
                   <div className="bg-[#f6cd54] text-red-500 p-3 rounded-lg mb-4 flex flex-col gap-2 ">
                     {warningMessage}
@@ -209,6 +251,43 @@ const Cart = () => {
                     </button>
                   </div>
                 )}
+                <div className="deli">
+                  {dontHaveAddress ? (
+                    <div className="address-summary">
+                      <p className="text-xl font-bold pb-2 -tracking-tight">
+                        Your Address:
+                      </p>
+                      <div className="address-details">
+                        <p>
+                          <strong>Name:</strong> {formData.name}
+                        </p>
+                        <p>
+                          <strong>Address:</strong> {formData.address}
+                        </p>
+                        <p>
+                          <strong>Phone Number:</strong>{" "}
+                          {formData.alternativePhone}
+                        </p>
+                        <p>
+                          <strong>Nearby:</strong> {formData.nearby}
+                        </p>
+                        <p>
+                          <strong>Postal Code:</strong> {formData.postalCode}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <p>No address found:</p>
+                      <button
+                        className="bg-gray-800 py-2 px-4 rounded-xl pt-2 text-white"
+                        onClick={() => setShowAddressForm(true)}
+                      >
+                        Add Address
+                      </button>
+                    </div>
+                  )}
+                </div>
 
                 <div className="h-4 w-full">
                   <button
@@ -229,15 +308,15 @@ const Cart = () => {
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-[#f6cd54] p-6 rounded-lg shadow-lg w-[90%] max-w-md relative">
             <button
-              onClick={() => setShowAddressForm(false)}
+              onClick={() => {
+                setShowAddressForm(false);
+              }}
               className="absolute top-2 right-2 text-gray-700 text-2xl font-bold"
             >
               ×
             </button>
             <h2 className="text-2xl font-semibold mb-4">Delivery Details</h2>
             <form
-              action="https://formspree.io/f/mbllovbq"
-              method="POST"
               onSubmit={handleAddressSubmit}
               className="flex flex-col gap-4"
             >
