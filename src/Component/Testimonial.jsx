@@ -5,20 +5,20 @@ const Testimonials = () => {
     {
       name: "Aakash Verma",
       quote:
-        "The anime figures I bought from Otaku Center are top quality! The attention to detail is amazing, and my collection has never looked better.",
+        "The anime figures I bought from otaku centre are top quality! The attention to detail is amazing, and my collection has never looked better.",
       imgSrc:
         "https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTM2fHxpbmRpYW4lMjBmYWNlfGVufDB8fDB8fHww",
     },
     {
       name: "Nina Patel",
       quote:
-        "As a die-hard anime fan, I can say that Otaku Center's selection of action figures is unmatched. These collectibles are definitely worth every penny.",
+        "As a die-hard anime fan, I can say that otaku centre's selection of action figures is unmatched. These collectibles are definitely worth every penny.",
       imgSrc: "https://randomuser.me/api/portraits/women/15.jpg",
     },
     {
       name: "Rajiv Sharma",
       quote:
-        "I’ve been searching for rare anime figures for a while, and Otaku Center delivered. The packaging was perfect, and the figures are just what I wanted!",
+        "I’ve been searching for rare anime figures for a while, and otaku centre delivered. The packaging was perfect, and the figures are just what I wanted!",
       imgSrc:
         "https://images.unsplash.com/photo-1629269715587-5003f2ce745a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjN8fGluZGlhbiUyMGZhY2V8ZW58MHx8MHx8fDA%3D",
     },
