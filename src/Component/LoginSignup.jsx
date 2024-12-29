@@ -98,7 +98,7 @@ const LoginSignup = () => {
 
       {/* Dropdown content */}
       {showDropdown && (
-        <div className="p-8 absolute z-0 -left-[18rem] top-16 bg-white text-black shadow-2xl rounded-md">
+        <div className="p-5 absolute z-0 right-[0rem] top-16 bg-white text-black shadow-2xl rounded-md">
           {user ? (
             <>
               <h2 className="text-2xl font-bold mb-4 whitespace-nowrap">
