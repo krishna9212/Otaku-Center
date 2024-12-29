@@ -87,7 +87,7 @@ const Footer = () => {
       {/* Footer Bottom */}
       <hr className="border-t border-[#FBBF24] my-8" />
       <div className="text-center text-sm text-gray-500">
-        <p>&copy; {currentYear} Otaku Center. All Rights Reserved.</p>
+        <p>&copy; {currentYear} otaku centre. All Rights Reserved.</p>
       </div>
     </footer>
   );
