@@ -17,10 +17,10 @@ const AboutUs = () => {
         {/* Right Section - Content */}
         <div className="flex flex-col items-center justify-center  space-y-6 ">
           <h1 className="text-4xl text-center whitespace-nowrap md:text-5xl font-bold leading-tight">
-            Welcome to <span className="text-yellow-400">Otaku Center</span>
+            Welcome to <span className="text-yellow-400">otaku centre</span>
           </h1>
           <p className="text-lg text-gray-600 leading-relaxed px-5">
-            Otaku Center is India's premier destination for anime and pop
+            otaku centre is India's premier destination for anime and pop
             culture enthusiasts. We bring your favorite characters to life with
             a curated selection of premium action figures and collectibles. From
             classic anime to the latest hits, we have something for every otaku
@@ -29,7 +29,7 @@ const AboutUs = () => {
           <p className="text-lg text-gray-600 leading-relaxed px-5">
             Based in India, we pride ourselves on delivering authentic products
             and a seamless shopping experience. Whether you're a dedicated
-            collector or just starting your journey, Otaku Center is here to
+            collector or just starting your journey, otaku centre is here to
             help you build your dream collection.
           </p>
           <button
