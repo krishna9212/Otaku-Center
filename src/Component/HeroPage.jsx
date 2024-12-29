@@ -6,6 +6,7 @@ import video2 from "./../assets/videos/AOT.mp4";
 import image4 from "./../assets/HeroImages/luffy.jpeg";
 import video4 from "./../assets/videos/onePiece.mp4";
 import Cart from "./Cart";
+import { FaWhatsapp } from "react-icons/fa"; // Import WhatsApp icon
 
 function HeroPage() {
   // State for controlling mute and the active video
@@ -18,6 +19,15 @@ function HeroPage() {
 
   const changeVideo = (video) => {
     setActiveVideo(video);
+  };
+
+  const handleWhatsAppClick = () => {
+    const phoneNumber = "+919859927668"; // Your phone number here
+    const message = "Hello, I need help with my cart!"; // Optional pre-filled message
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+    window.open(url, "_blank"); // Open WhatsApp in a new tab
   };
 
   return (
@@ -107,6 +117,15 @@ function HeroPage() {
       {/* Cart Icon in Bottom Right Corner */}
       <div className="carticon fixed bottom-8 right-8  h-14 w-14 bg-[#F6CF5A] rounded-full flex justify-center items-center cursor-pointer">
         <Cart />
+      </div>
+
+      {/* WhatsApp Button */}
+      <div
+        className="whatsapp-icon fixed bottom-24 right-8 h-14 w-14 bg-[#25D366] rounded-full flex justify-center items-center cursor-pointer"
+        onClick={handleWhatsAppClick}
+        style={{ boxShadow: "0px 4px 10px rgba(0,0,0,0.3)" }}
+      >
+        <FaWhatsapp style={{ color: "#fff", fontSize: "24px" }} />
       </div>
     </div>
   );
