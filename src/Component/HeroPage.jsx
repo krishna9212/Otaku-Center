@@ -90,13 +90,13 @@ function HeroPage() {
       </div>
 
       {/* Cart Icon */}
-      <div className="carticon fixed bottom-8 right-8 h-14 w-14 bg-[#F6CF5A] rounded-full flex justify-center items-center cursor-pointer">
+      <div className="carticon fixed bottom-8 z-40 right-8 h-14 w-14 bg-[#F6CF5A] rounded-full flex justify-center items-center cursor-pointer">
         <Cart />
       </div>
 
       {/* WhatsApp Button */}
       <div
-        className="whatsapp-icon fixed bottom-24 right-8 text-2xl h-14 w-14 bg-[#25D366] rounded-full flex justify-center items-center cursor-pointer"
+        className="whatsapp-icon fixed bottom-24 z-40 right-8 text-2xl h-14 w-14 bg-[#25D366] rounded-full flex justify-center items-center cursor-pointer"
         onClick={() => handleWhatsAppClick()}
         style={{ boxShadow: "0px 4px 10px rgba(0,0,0,0.3)" }}
       >
