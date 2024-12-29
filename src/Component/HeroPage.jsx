@@ -28,7 +28,7 @@ function HeroPage() {
         autoPlay
         loop
         muted={isMuted}
-        className="absolute top-0 left-0 w-full h-full object-cover z-10"
+        className="absolute top-0 left-0 w-full h-full object-cover z-0"
         type="video/mp4"
       />
 
@@ -105,7 +105,7 @@ function HeroPage() {
       </div>
 
       {/* Cart Icon in Bottom Right Corner */}
-      <div className="carticon fixed bottom-8 right-8 z-50 h-14 w-14 bg-[#F6CF5A] rounded-full flex justify-center items-center cursor-pointer">
+      <div className="carticon fixed bottom-8 right-8  h-14 w-14 bg-[#F6CF5A] rounded-full flex justify-center items-center cursor-pointer">
         <Cart />
       </div>
     </div>
