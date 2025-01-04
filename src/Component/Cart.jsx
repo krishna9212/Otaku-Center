@@ -333,7 +333,7 @@ const Cart = () => {
 
                   {showQR && (
                     <div className="fixed inset-0 flex justify-center items-center bg-gray-800 text-black bg-opacity-70 z-50 overflow-hidden">
-                      <div className="main w-[95%] sm:w-[90%] mt-20 md:mt-10 h-min-[83%] md:p-10 text-black flex  flex-col-reverse sm:flex-row bg-white rounded-lg overflow-hidden">
+                      <div className="main w-[95%] sm:w-[90%] -mb-40 md:mt-10 md:-mb-0 h-min-[83%] md:p-10 text-black flex  flex-col-reverse sm:flex-row bg-white rounded-lg overflow-auto">
                         {/* Left Section */}
                         <div className="lefty relative w-full h-full sm:w-1/2 flex justify-center items-center bg-white p-4">
                           <img
@@ -344,7 +344,7 @@ const Cart = () => {
                         </div>
 
                         {/* Right Section */}
-                        <div className="right w-full sm:w-1/2 h-full bg-white p-4 relative overflow-y-auto overflow-x-hidden">
+                        <div className="right w-full sm:w-1/2 h-full bg-white p-4 z-[999999] relative overflow-hidden">
                           {/* Cancel Button */}
                           <button
                             onClick={closeQR}
