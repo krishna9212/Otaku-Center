@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useCart } from "./CartContext";
+
 import { auth, signInWithPopup, googleProvider, db } from "./firebaseConfig";
 import { doc, setDoc, collection } from "firebase/firestore"; // Import Firestore methods
 import qrImage from "./../assets/HeroImages/qr_img.jpg"; // Path to the QR code image
@@ -13,6 +14,7 @@ const Cart = () => {
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [dontHaveAddress, setdontHaveAddress] = useState(false);
   const [showQR, setShowQR] = useState(false);
+  const [allInfo, setallInfo] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -100,41 +102,11 @@ const Cart = () => {
     const savedAddress = localStorage.getItem("customerAddress");
 
     if (user && savedAddress) {
-      const cartDetails = cart.map((item) => ({
-        productName: item.productName,
-        quantity: item.quantity,
-        price: item.price,
-        total: item.price * item.quantity,
-      }));
+      localStorage.setItem("customerAddress", JSON.stringify(savedAddress));
+      //     alert("Your order is placed!");
 
-      const totalPrice = cart.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
-      );
-
-      const payload = {
-        cartDetails,
-        totalPrice,
-        userId: user,
-        timestamp: new Date().toISOString(),
-      };
-
-      try {
-        const ordersRef = collection(db, "orders");
-        await setDoc(doc(ordersRef), payload);
-        console.log("Order saved to Firestore successfully!");
-
-        localStorage.setItem("customerAddress", JSON.stringify(savedAddress));
-        alert("Your order is placed!");
-
-        setdontHaveAddress(false);
-        setShowQR(true); // Show the QR code after successful order
-      } catch (error) {
-        console.error("Error saving order to Firestore:", error);
-        setWarningMessage(
-          "There was an issue processing your order. Please try again."
-        );
-      }
+      setdontHaveAddress(false);
+      setShowQR(true); // Show the QR code after successful order
     } else {
       setdontHaveAddress(true);
       setWarningMessage(
@@ -151,6 +123,66 @@ const Cart = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handlePlaceOrder = async (e) => {
+    e.preventDefault(); // Prevent form submission if it's inside a form
+
+    const savedAddress = localStorage.getItem("customerAddress");
+
+    // Prepare cart details
+    const cartDetails = cart.map((item) => ({
+      productName: item.productName,
+      quantity: item.quantity,
+      price: item.price,
+      total: item.price * item.quantity,
+    }));
+
+    // Calculate total price
+    const totalPrice = cart.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+
+    // Prepare the payload, including form data
+    const payload = {
+      cartDetails,
+      totalPrice,
+      userId: user,
+      timestamp: new Date().toISOString(),
+      // Include the form data
+      shippingDetails: formData,
+    };
+
+    alert("Order placed successfully!");
+
+    try {
+      // Reference to the 'orders' collection in Firestore
+      const ordersRef = collection(db, "orders");
+      // Save the order to Firestore
+      await setDoc(doc(ordersRef), payload);
+
+      console.log("Order saved to Firestore successfully!");
+
+      // Update localStorage with saved address (if applicable)
+      localStorage.setItem("customerAddress", JSON.stringify(savedAddress));
+
+      // Show success message
+      alert("Your order is placed!");
+
+      // Reset form or other states as needed
+      setdontHaveAddress(false);
+      setShowQR(false); // Show the QR code after successful order
+    } catch (error) {
+      console.error("Error saving order to Firestore:", error);
+      setWarningMessage(
+        "There was an issue processing your order. Please try again."
+      );
+    }
+  };
+
+  const handleChangeAddress = () => {
+    setShowAddressForm(true);
   };
 
   return (
@@ -299,21 +331,74 @@ const Cart = () => {
                     </button>
                   </div>
 
-                  {/* Show QR Code if the condition is true */}
                   {showQR && (
-                    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-20">
-                      <div className="relative">
-                        <button
-                          onClick={closeQR}
-                          className="absolute top-3 text-2xl right-5 text-black "
-                        >
-                          X
-                        </button>
-                        <img
-                          src={qrImage}
-                          alt="QR Code"
-                          className="w-[400px] h-[550px]"
-                        />
+                    <div className="fixed inset-0 flex justify-center items-center bg-gray-800 text-black bg-opacity-70 z-50 overflow-hidden">
+                      <div className="main w-[95%] sm:w-[90%] mt-20 md:mt-10 h-min-[83%] md:p-10 text-black flex  flex-col-reverse sm:flex-row bg-white rounded-lg overflow-hidden">
+                        {/* Left Section */}
+                        <div className="lefty relative w-full h-full sm:w-1/2 flex justify-center items-center bg-white p-4">
+                          <img
+                            src={qrImage}
+                            alt="QR Code"
+                            className="w-[250px] sm:w-[350px] h-auto rounded-2xl"
+                          />
+                        </div>
+
+                        {/* Right Section */}
+                        <div className="right w-full sm:w-1/2 h-full bg-white p-4 relative overflow-y-auto overflow-x-hidden">
+                          {/* Cancel Button */}
+                          <button
+                            onClick={closeQR}
+                            className="absolute top-2 right-2 text-black font-bold text-2xl"
+                          >
+                            X
+                          </button>
+
+                          <h1 className="text-3xl -ml-1 font-semibold tracking-[0.001rem]">
+                            Checkout
+                          </h1>
+                          {/* Product Details */}
+                          <h2 className="text-black text-lg font-semibold mb-4">
+                            Product Details
+                          </h2>
+                          {cart.map((item, index) => (
+                            <div
+                              key={index}
+                              className="flex justify-between items-center border-b border-gray-600 py-2"
+                            >
+                              <div>
+                                <p className="text-black">{item.productName}</p>
+                                <p className="text-black text-sm">
+                                  Quantity: {item.quantity}
+                                </p>
+                              </div>
+                              <p className="text-black font-medium">
+                                ₹{item.price * item.quantity}
+                              </p>
+                            </div>
+                          ))}
+
+                          {/* Delivery Address */}
+                          <h2 className="text-black text-lg font-semibold mt-6 mb-4">
+                            Delivery Address
+                          </h2>
+                          <p className="text-gray-400  break-words  rounded">
+                            {localStorage.getItem("customerAddress")}
+                          </p>
+                          <button
+                            onClick={handleChangeAddress}
+                            className="text-blue-500 hover:underline mt-2"
+                          >
+                            Change Address
+                          </button>
+
+                          {/* Place Order Button */}
+                          <button
+                            onClick={handlePlaceOrder}
+                            className="w-full bg-blue-600 text-white py-2 mt-6 rounded hover:bg-blue-700"
+                          >
+                            Place Order
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -327,19 +412,21 @@ const Cart = () => {
       {/* Delivery Address Form */}
       {showAddressForm && (
         <div className="fixed inset-0  bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-[#f6cd54]  p-6 rounded-lg shadow-lg w-[90%] max-w-md relative">
+          <div className="bg-[#F6CD54] p-6 rounded-lg shadow-lg w-[90%] max-w-md relative z-50">
             <button
               onClick={() => {
                 setShowAddressForm(false);
               }}
-              className="absolute top-2 right-2 text-gray-700 text-2xl font-bold"
+              className="absolute top-2 right-2 text-gray-700 text-2xl font-bold z-50"
             >
               ×
             </button>
-            <h2 className="text-2xl font-semibold mb-4">Delivery Details</h2>
+            <h2 className="text-2xl font-semibold mb-4 z-50">
+              Delivery Details
+            </h2>
             <form
               onSubmit={handleAddressSubmit}
-              className="flex flex-col gap-4"
+              className="flex flex-col gap-4 z-50"
             >
               <input
                 type="text"
@@ -350,7 +437,7 @@ const Cart = () => {
                 pattern="^[a-zA-Z\s]+$"
                 title="Please enter a valid full name (letters and spaces only)."
                 required
-                className="border p-2 rounded "
+                className="border p-2 rounded  z-50"
               />
 
               <input
