@@ -382,7 +382,19 @@ const Cart = () => {
                             Delivery Address
                           </h2>
                           <p className="text-gray-400  break-words  rounded">
-                            {localStorage.getItem("customerAddress")}
+                            <p>
+                              <strong>Name:</strong> {formData.name} <br></br>
+                              <strong>Address:</strong> {formData.address}
+                              <br></br>
+                              <strong>Phone Number:</strong>
+                              {formData.alternativePhone}
+                              <br></br>
+                              <strong>Nearby:</strong> {formData.nearby}
+                              <br></br>
+                              <strong>Postal Code:</strong>
+                              {formData.postalCode}
+                              <br></br>
+                            </p>
                           </p>
                           <button
                             onClick={handleChangeAddress}
