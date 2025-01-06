@@ -14,7 +14,8 @@ const Cart = () => {
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [dontHaveAddress, setdontHaveAddress] = useState(false);
   const [showQR, setShowQR] = useState(false);
-  const [allInfo, setallInfo] = useState(null);
+  const [showConfirmationBox, setShowConfirmationBox] = useState(false);
+  const [customMessage, setCustomMessage] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -30,30 +31,10 @@ const Cart = () => {
   const handleAddressSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem("customerAddress", JSON.stringify(formData));
-    // Prepare cart information
-    const cartDetails = cart.map((item) => ({
-      productName: item.productName,
-      quantity: item.quantity,
-      price: item.price,
-      total: item.price * item.quantity,
-    }));
 
-    // Calculate total price
-    const totalPrice = cart.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
-
-    // Combine form data and cart details
-    const payload = {
-      ...formData,
-      cartDetails,
-      totalPrice,
-    };
     setdontHaveAddress(false);
     setShowAddressForm(false);
-    console.log(dontHaveAddress);
-    console.log(payload);
+    console.log(formData);
   };
 
   // UseEffect hooks
@@ -99,12 +80,20 @@ const Cart = () => {
   const handleProceedPayment = async (e) => {
     e.preventDefault();
     const user = localStorage.getItem("user");
-    const savedAddress = localStorage.getItem("customerAddress");
+    let savedAddress = localStorage.getItem("customerAddress");
 
     if (user && savedAddress) {
-      localStorage.setItem("customerAddress", JSON.stringify(savedAddress));
-      //     alert("Your order is placed!");
+      // Check the size of the saved address
+      if (new TextEncoder().encode(savedAddress).length > 5000) {
+        // Assuming 5 KB as a limit
+        console.warn("Address data too large to store in localStorage");
+        setWarningMessage(
+          "Address data is too large. Please review your address."
+        );
+        return;
+      }
 
+      // Store only essential data if necessary
       setdontHaveAddress(false);
       setShowQR(true); // Show the QR code after successful order
     } else {
@@ -154,7 +143,7 @@ const Cart = () => {
       shippingDetails: formData,
     };
 
-    alert("Order placed successfully!");
+    // alert("Order placed successfully!");
 
     try {
       // Reference to the 'orders' collection in Firestore
@@ -165,20 +154,78 @@ const Cart = () => {
       console.log("Order saved to Firestore successfully!");
 
       // Update localStorage with saved address (if applicable)
-      localStorage.setItem("customerAddress", JSON.stringify(savedAddress));
+      // localStorage.setItem(  "customerAddress", JSON.stringify(savedAddress));
 
-      // Show success message
-      alert("Your order is placed!");
-
-      // Reset form or other states as needed
+      alert("Order placed successfully!");
       setdontHaveAddress(false);
-      setShowQR(false); // Show the QR code after successful order
+      setShowQR(false);
+      setShowConfirmationBox(true);
     } catch (error) {
       console.error("Error saving order to Firestore:", error);
       setWarningMessage(
         "There was an issue processing your order. Please try again."
       );
     }
+  };
+
+  const handleWhatsAppClick = () => {
+    // Retrieve customer address data from localStorage
+    const customerAddress = JSON.parse(localStorage.getItem("customerAddress"));
+
+    // Check if customerAddress exists and is valid
+    if (
+      !customerAddress ||
+      !customerAddress.name ||
+      !customerAddress.address ||
+      !customerAddress.postalCode ||
+      !customerAddress.state ||
+      !customerAddress.nearby
+    ) {
+      alert("Please fill in all the required fields before proceeding.");
+      return;
+    }
+
+    // Define the message with order details and user inputs
+    const message = `
+Hello Myself ${customerAddress.name || "Customer"},
+
+I have placed an order on your website. Here are the details:
+
+*Order Details:*
+${cart
+  .map(
+    (item, index) =>
+      `${index + 1}. ${item.productName} - Quantity: ${
+        item.quantity
+      }, Price: ₹${item.price * item.quantity}`
+  )
+  .join("\n")}
+
+*Total Price:* ₹${cart.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    )}
+
+*Delivery Address:*
+Name: ${customerAddress.name || "N/A"}
+Address: ${customerAddress.address || "N/A"}
+Nearby: ${customerAddress.nearby || "N/A"}
+Postal Code: ${customerAddress.postalCode || "N/A"}
+State: ${customerAddress.state || "N/A"}
+Phone: ${customerAddress.alternativePhone || "N/A"}
+
+*Additional Note:* ${customMessage || "No additional notes."}
+
+*Payment Status:* **I am sending a screenshot of the payment made using the QR code on your website for payment confirmation.**
+
+Thank you!
+`;
+
+    // Encode the message for use in the URL
+    const encodedMessage = encodeURIComponent(message);
+
+    // Open WhatsApp with the pre-filled message
+    window.open(`https://wa.me/918595927668?text=${encodedMessage}`, "_blank");
   };
 
   const handleChangeAddress = () => {
@@ -409,6 +456,39 @@ const Cart = () => {
                             className="w-full bg-blue-600 text-white py-2 mt-6 rounded hover:bg-blue-700"
                           >
                             Place Order
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {showConfirmationBox && (
+                    <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-70 z-50">
+                      <div className="bg-white p-8 rounded-xl shadow-lg w-[90%] md:w-[60%] max-w-lg">
+                        <h2 className="text-3xl font-semibold text-center text-green-600 mb-6">
+                          Order Confirmation
+                        </h2>
+                        <p className="text-[1.05rem] text-gray-700 mb-6 text-center">
+                          Thank you for placing your order! Please confirm by
+                          sending the order details and payment screenshot via
+                          WhatsApp. Feel free to add any extra instructions
+                          below.
+                        </p>
+
+                        {/* Custom Message Textarea */}
+                        <textarea
+                          className="w-full h-[4rem] p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out mb-4"
+                          placeholder="Enter any additional message (optional)"
+                          value={customMessage}
+                          onChange={(e) => setCustomMessage(e.target.value)}
+                        ></textarea>
+
+                        {/* Send WhatsApp Button */}
+                        <div className="mt-6">
+                          <button
+                            onClick={handleWhatsAppClick} // Trigger WhatsApp with pre-filled message
+                            className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 ease-in-out"
+                          >
+                            Send Order via WhatsApp
                           </button>
                         </div>
                       </div>
