@@ -226,6 +226,7 @@ Thank you!
 
     // Open WhatsApp with the pre-filled message
     window.open(`https://wa.me/918595927668?text=${encodedMessage}`, "_blank");
+    setShowConfirmationBox(false);
   };
 
   const handleChangeAddress = () => {
