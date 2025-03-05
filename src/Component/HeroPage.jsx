@@ -52,7 +52,7 @@ function HeroPage() {
       </button>
 
       {/* Hero Content */}
-      <div className="HeroUpper z-10 w-full h-[80%] flex flex-col justify-end items-start relative px-[4rem]">
+      <div className="HeroUpper z-10 w-full h-[80%] flex flex-col justify-end items-start relative px-[2rem]">
         <h1 className="text-[2.1rem] whitespace-nowrap md:text-[6rem] capitalize font-black text-white">
           Relive the Madness!
         </h1>

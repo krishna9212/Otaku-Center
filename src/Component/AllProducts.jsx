@@ -62,115 +62,112 @@ function AllProducts() {
       </h1>
 
       {/* Product List */}
-      <div className="grid h-min-full bg-[#faec94] grid-cols-1 sm:grid-cols-4 gap-6 p-6">
-        {products.map((product) => (
-          <div
-            key={product.id}
-            className="bg-white h-min-[100%] p-6 rounded-lg shadow-lg transform transition-all"
-            onClick={() => handleProductClick(product)} // Open modal on click
-          >
-            {/* Product Image */}
-            <img
-              src={product.imageURL || "https://via.placeholder.com/150"}
-              alt={product.productName}
-              className="w-full h-[70%] md:h-[64%] object-cover rounded-lg mb-1 md:mb-2 shadow-md "
-            />
-
-            {/* Product Info */}
-            <h3
-              className="text-2xl h-min-[15%] overflow-hidden font-semibold text-gray-900 text-ellipsis whitespace-nowrap mb-1 md:mb-2 "
-              title={product.productName}
-            >
-              {product.productName}
-            </h3>
-            <p
-              className="text-gray-600 overflow-hidden text-ellipsis mb-1 md:mb-2 whitespace-nowrap"
-              title={product.description}
-            >
-              {product.description}
-            </p>
-
-            {/* Product Action */}
-            <div className="flex   justify-between items-start py-2">
-              <span className="text-xl font-semibold text-[#4E4C50]">
-                ₹{product.price}
-              </span>
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent modal opening on button click
-                    if (isProductInCart(product.id)) {
-                      handleRemoveFromCart(product);
-                    } else {
-                      handleAddToCart(product);
-                    }
-                  }}
-                  className={`${
-                    isProductInCart(product.id)
-                      ? "bg-gradient-to-r from-[#FF7043] to-[#F44336]"
-                      : "bg-gradient-to-r from-[#FF9F6A] to-[#F57C60]"
-                  } text-white border-none px-6 py-2 rounded-xl text-sm hover:opacity-80 transition-all duration-300`}
-                >
-                  {isProductInCart(product.id)
-                    ? "Remove from Cart"
-                    : "Add to Bag"}
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className="grid h-min-full bg-[#faec94] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 p-8">
+  {products.map((product) => (
+    <div
+      key={product.id}
+      className="bg-white p-6 rounded-xl shadow-lg transition-transform transform   cursor-pointer flex flex-col h-[400px]" // Fixed height
+      onClick={() => handleProductClick(product)}
+    >
+      {/* Product Image */}
+      <div className="w-full h-[60%] overflow-hidden rounded-lg mb-4 ">
+        <img
+          src={product.imageURL || "https://via.placeholder.com/300"}
+          alt={product.productName}
+          className="w-full h-full object-contain transition-transform duration-300 "
+        />
       </div>
+
+      {/* Product Info */}
+      <h3
+        className="text-lg font-bold text-gray-900 truncate"
+        title={product.productName}
+      >
+        {product.productName}
+      </h3>
+      <p
+        className="text-sm text-gray-600 truncate"
+        title={product.description}
+      >
+        {product.description}
+      </p>
+
+      {/* Product Action */}
+      <div className="mt-auto flex justify-between items-center">
+        <span className="text-xl font-semibold text-[#4E4C50]">
+          ₹{product.price}
+        </span>
+        <button
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent modal opening on button click
+            isProductInCart(product.id)
+              ? handleRemoveFromCart(product)
+              : handleAddToCart(product);
+          }}
+          className={`px-6 py-2 rounded-lg text-sm text-white font-medium transition-all duration-300 ${
+            isProductInCart(product.id)
+              ? "bg-gradient-to-r from-[#FF7043] to-[#F44336] hover:opacity-80"
+              : "bg-gradient-to-r from-[#FF9F6A] to-[#F57C60] hover:opacity-80"
+          }`}
+        >
+          {isProductInCart(product.id) ? "Remove from Cart" : "Add to Bag"}
+        </button>
+      </div>
+    </div>
+  ))}
+</div>
+
+
 
       {/* Modal for Product Details */}
       {selectedProduct && (
-        <div className="fixed inset-0 h-full w-full bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white  h-[90%] w-[95%] flex flex-col justify-center  md:h-[90%] md:w-[30%] p-6 rounded-lg shadow-lg relative">
-            {/* Close Button */}
-            <button
-              onClick={closeModal}
-              className="absolute font-bold text-[2rem] top-2 md:top-0 right-4 text-gray-600 hover:text-gray-900"
-            >
-              &times;
-            </button>
+  <div className="fixed inset-0 h-full w-full bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-blur-sm">
+    <div className="bg-white w-[95%] md:w-[40%] lg:w-[30%] max-h-[90%] p-6 rounded-xl shadow-2xl relative flex flex-col">
+      {/* Close Button */}
+      <button
+        onClick={closeModal}
+        className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-3xl font-bold"
+      >
+        &times;
+      </button>
 
-            {/* Product Details */}
-            <img
-              src={
-                selectedProduct.imageURL || "https://via.placeholder.com/150"
-              }
-              alt={selectedProduct.productName}
-              className="w-full h-min-[75%] object-cover rounded-lg mb-4"
-            />
-            <h2 className="text-3xl font-semibold mb-2">
-              {selectedProduct.productName}
-            </h2>
-            <p className="text-gray-600 mb-4">{selectedProduct.description}</p>
-            <div className="flex justify-between items-center">
-              <span className="text-xl font-semibold text-[#4E4C50]">
-                ₹{selectedProduct.price}
-              </span>
-              <button
-                onClick={() => {
-                  if (isProductInCart(selectedProduct.id)) {
-                    handleRemoveFromCart(selectedProduct);
-                  } else {
-                    handleAddToCart(selectedProduct);
-                  }
-                }}
-                className={`${
-                  isProductInCart(selectedProduct.id)
-                    ? "bg-gradient-to-r from-[#FF7043] to-[#F44336]"
-                    : "bg-gradient-to-r from-[#FF9F6A] to-[#F57C60]"
-                } text-white px-6 py-2 rounded-xl text-sm hover:opacity-80 transition-all duration-300`}
-              >
-                {isProductInCart(selectedProduct.id)
-                  ? "Remove from Cart"
-                  : "Add to Bag"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Product Image */}
+      <div className="w-full h-[250px] p-1 md:h-[300px] overflow-hidden rounded-lg mb-4">
+        <img
+          src={selectedProduct.imageURL || "https://via.placeholder.com/300"}
+          alt={selectedProduct.productName}
+          className="w-full h-full object-contain rounded-lg transition-transform duration-300 "
+        />
+      </div>
+
+      {/* Product Details */}
+      <h2 className="text-2xl font-semibold text-gray-900 mb-2 text-center">
+        {selectedProduct.productName}
+      </h2>
+      <p className="text-gray-600 text-center mb-4">{selectedProduct.description}</p>
+
+      {/* Price & Action Button */}
+      <div className="flex justify-between items-center mt-auto">
+        <span className="text-xl font-bold text-[#4E4C50]">₹{selectedProduct.price}</span>
+        <button
+          onClick={() => {
+            isProductInCart(selectedProduct.id)
+              ? handleRemoveFromCart(selectedProduct)
+              : handleAddToCart(selectedProduct);
+          }}
+          className={`px-6 py-2 rounded-lg text-sm text-white font-medium transition-all duration-300 ${
+            isProductInCart(selectedProduct.id)
+              ? "bg-gradient-to-r from-[#FF7043] to-[#F44336] hover:opacity-80"
+              : "bg-gradient-to-r from-[#FF9F6A] to-[#F57C60] hover:opacity-80"
+          }`}
+        >
+          {isProductInCart(selectedProduct.id) ? "Remove from Cart" : "Add to Bag"}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </>
   );
 }

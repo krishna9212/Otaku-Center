@@ -86,7 +86,7 @@ const ProductsList = () => {
 
   return (
     <div
-      className="relative bg-[#f9e98a] p-10 pb-20 md:pb-16 bg-no-repeat bg-cover"
+      className="relative bg-[#f9e98a] p-4 pb-20 md:pb-16 bg-no-repeat bg-cover"
       onMouseEnter={stopAutoScroll}
       onMouseLeave={startAutoScroll}
     >
