@@ -30,7 +30,7 @@ const LoginSignup = () => {
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      localStorage.removeItem("user"); // Remove user info from localStorage
+      localStorage.clear()
       setUser(null);
       handleClose(); // Close dropdown on logout
     } catch (error) {
@@ -98,10 +98,10 @@ const LoginSignup = () => {
 
       {/* Dropdown content */}
       {showDropdown && (
-        <div className="p-5 absolute z-0 -left-[21.5rem] md:-left-[22rem] top-16 bg-white text-black shadow-2xl rounded-md">
+        <div className="p-5 absolute z-0 -left-[18rem] md:-left-[22rem] top-16 bg-white text-black shadow-2xl rounded-md">
           {user ? (
             <>
-              <h2 className="text-2xl font-bold mb-4 whitespace-nowrap">
+              <h2 className="text-xl md:text-2xl font-bold mb-4 whitespace-nowrap">
                 Welcome, {user.displayName || "User"}!
               </h2>
               <p>

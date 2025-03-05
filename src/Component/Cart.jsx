@@ -114,7 +114,7 @@ const Cart = () => {
           email: user?.email || "",
           contact: user?.phoneNumber || "",
         },
-        theme: { color: "#3399cc" },
+        theme: { color: "#F6CF5A" },
         method: { upi: true, qr: true, card: true, netbanking: true, wallet: true },
       };
   

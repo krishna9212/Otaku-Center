@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Menu from "./Menu";
 // import Search from "./Search";
 import LoginSignup from "./LoginSignup";
 import Cart from "./Cart";
 import logo from "./../assets/HeroImages/OTA.png";
+
 function Navigation() {
   const [slidebar, setSlidebar] = useState(false);
+
+  // Clear localStorage only once per session
+  useEffect(() => {
+    if (!sessionStorage.getItem("clearedLocalStorage")) {
+      localStorage.clear();
+      sessionStorage.setItem("clearedLocalStorage", "true");
+    }
+  }, []);
 
   return (
     <div
@@ -22,10 +31,8 @@ function Navigation() {
           className="h-[160%] md:h-[190%] object-cover"
         />
       </div>
-      <div className="right w-1/3 z-30 h-full flex items-center justify-end gap- md:gap-10 px-2 md:px-12">
-        {/* <Search /> */}
+      <div className="right w-[30%] z-30 h-full flex items-center justify-end gap- md:gap-10 px-2 md:px-12">
         <LoginSignup />
-        {/* <Cart /> */}
       </div>
     </div>
   );
